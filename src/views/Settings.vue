@@ -2,10 +2,10 @@
 
   <div>
     <v-layout row wrap>
-      <v-flex xs6 pt-1 pl-2>
-        <u class="headline font-weight-medium">Dashboard</u>
+      <v-flex xs10 pt-1 pl-2>
+        <u class="headline font-weight-medium">Settings</u>
       </v-flex>
-      <v-flex xs6>
+      <v-flex xs2>
         <v-layout align-end justify-end>
           <v-btn flat icon color="blue">
             <v-icon medium>refresh</v-icon>
@@ -13,26 +13,19 @@
         </v-layout>
       </v-flex>
     </v-layout>
-    <sparkline/>
   </div>
 
 </template>
 
 <script>
+  export default {
+    components: {
 
-import Sparkline from '@/components/Sparkline'
-
-export default {
-  name: 'App',
-  components: {
-    Sparkline
-  },
-  data() {
-    return {
-      
-    }
+    },
+    data: () => ({
+          
+    })
   }
-}
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
   <div>
     <v-layout row wrap>
       <v-flex xs10 pt-1 pl-2>
-        <u class="headline font-weight-medium">Inventory</u>
+        <u class="headline font-weight-medium">Purchase History</u>
       </v-flex>
       <v-flex xs2>
         <v-layout align-end justify-end>
@@ -14,7 +14,7 @@
       </v-flex>
     </v-layout>
   </div>
-  
+
 </template>
 
 <script>
@@ -35,4 +35,3 @@
     border-bottom:3px solid #000;
   }
 </style>
-
