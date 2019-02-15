@@ -54,7 +54,7 @@
             {title: "Purchase History", icon: "equalizer",      path: "/purchase_history"},
             {divider: true },
             {title: "Settings",         icon: "settings",       path: "/settings"},
-            {title: "Sign Out",         icon: "input",          path: "/signin"}
+            {title: "Sign Out",         icon: "input",          path: "/sign_in"}
         ]
     })
   }
