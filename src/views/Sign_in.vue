@@ -84,9 +84,7 @@
         watch: {
             user(val) {
                 this.loading = false
-                if (val !== null && val !== undefined) {
-                    if (val.id && val.email) this.$router.replace('/')
-                }
+                if (val.id !== null && val.id !== undefined) this.$router.replace('/')
             },
             authError(val) {
                 this.loading = false

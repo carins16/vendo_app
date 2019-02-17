@@ -21,9 +21,16 @@ new Vue({
       storageBucket: 'vendo-app-fa30b.appspot.com',
       messagingSenderId: '1046399963141'
     })
-
-    firebase.database().ref('items').on('value', function(snapshot){
-      console.log(snapshot.val())
+    
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$store.dispatch('autoSignIn', user)
+        firebase.database().ref('items').on('value', function(snapshot){
+          console.log(snapshot.val())
+        })
+      } else {
+        this.$router.replace('/sign_in')
+      }
     })
   }
 }).$mount('#app')

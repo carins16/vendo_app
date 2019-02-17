@@ -25,8 +25,7 @@ export default new Vuex.Store({
       ).then(
         response => {
           commit('setUser', {
-            id: response.user.uid,
-            email: payload.email
+            id: response.user.uid
           })
         }
       ).catch(
@@ -37,6 +36,18 @@ export default new Vuex.Store({
           })
         }
       )
+    },
+    autoSignIn ({commit}, payload) {
+      commit('setUser', {
+        id: payload.uid
+      })
+    },
+    signOut ({commit}) {
+      firebase.auth().signOut().then(function() {
+        commit('setUser', null)
+      }).catch(function(error) {
+        console.log(error)
+      });
     }
   },
   getters: {

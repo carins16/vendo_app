@@ -25,6 +25,14 @@
                         </v-list-tile-content>
                     </v-list-tile>
                 </template>
+                <v-list-tile @click="onLogout">
+                    <v-list-tile-action>
+                        <v-icon>input</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title class="subheading font-weight-medium">Sign Out</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
             </v-list>
         </v-navigation-drawer>
         <!-- Top toolbar -->
@@ -53,10 +61,19 @@
             {title: "Inventory",        icon: "storage",        path: "/inventory"},
             {title: "Purchase History", icon: "equalizer",      path: "/purchase_history"},
             {divider: true },
-            {title: "Settings",         icon: "settings",       path: "/settings"},
-            {title: "Sign Out",         icon: "input",          path: "/sign_in"}
+            {title: "Settings",         icon: "settings",       path: "/settings"}
         ]
-    })
+    }),
+    methods: {
+        onLogout() {
+            this.$store.dispatch('signOut')
+        }
+    },
+    computed: {
+        userIsAuthenticated() {
+            return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+        }
+    }
   }
 </script>
 
