@@ -1,7 +1,7 @@
 <template>
     <v-app id="inspire">
         <!-- Left side navigation drawer -->
-        <v-navigation-drawer v-model="drawer" fixed app>
+        <v-navigation-drawer v-if="userIsAuthenticated" v-model="drawer" fixed app>
             <!-- Material background -->
             <v-img :aspect-ratio="16/9" :src="require('@/assets/material.jpg')">
                 <v-layout pa-2 column fill-height class="lightbox white--text">
@@ -37,7 +37,7 @@
         </v-navigation-drawer>
         <!-- Top toolbar -->
         <v-toolbar color="blue" dark fixed app>
-            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-side-icon v-if="userIsAuthenticated" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>Vendo App</v-toolbar-title>
         </v-toolbar>
         <!-- Page content -->
@@ -72,6 +72,14 @@
     computed: {
         userIsAuthenticated() {
             return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
+        },
+        user() {
+            return this.$store.getters.getUser
+        }
+    },
+    watch: {
+        user(val) {
+            if (val == null || val == undefined) this.$router.replace('/sign_in')
         }
     }
   }

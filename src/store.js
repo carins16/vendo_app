@@ -6,15 +6,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user: null,
-    authError: null
+    user: JSON.parse(localStorage.getItem('user')),
+    loginError: null,
+    items: null
   },
   mutations: {
     setUser (state, payload) {
       state.user = payload
     },
-    setAuthError (state, payload) {
-      state.authError = payload
+    setLoginError (state, payload) {
+      state.loginError = payload
     }
   },
   actions: {
@@ -24,27 +25,29 @@ export default new Vuex.Store({
         payload.password
       ).then(
         response => {
+          commit('setLoginError', null)
           commit('setUser', {
-            id: response.user.uid
+            id:     response.user.uid,
+            email:  response.user.email
           })
+          localStorage.setItem('user', JSON.stringify({ 
+              id:     response.user.uid, 
+              email:  response.user.email
+          }))
         }
       ).catch(
         error => {
-          commit('setAuthError', {
-            code: error.code,
+          commit('setLoginError', {
+            errorCode: error.code,
             message: error.message
           })
         }
       )
     },
-    autoSignIn ({commit}, payload) {
-      commit('setUser', {
-        id: payload.uid
-      })
-    },
     signOut ({commit}) {
       firebase.auth().signOut().then(function() {
         commit('setUser', null)
+        localStorage.removeItem('user')
       }).catch(function(error) {
         console.log(error)
       });
@@ -54,8 +57,8 @@ export default new Vuex.Store({
     getUser: state => {
       return state.user
     },
-    getAuthError: state => {
-      return state.authError
+    getLoginError: state => {
+      return state.loginError
     }
   }
 })

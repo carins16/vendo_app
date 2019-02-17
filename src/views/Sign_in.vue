@@ -63,8 +63,8 @@
             user() {
                 return this.$store.getters.getUser
             },
-            authError() {
-                return this.$store.getters.getAuthError
+            loginError() {
+                return this.$store.getters.getLoginError
             },
             emailErrors () {
                 const errors = []
@@ -84,24 +84,20 @@
         watch: {
             user(val) {
                 this.loading = false
-                if (val.id !== null && val.id !== undefined) this.$router.replace('/')
+                if (val !== null && val !== undefined) this.$router.replace('/')
             },
-            authError(val) {
+            loginError(val) {
                 this.loading = false
                 if (val !== null && val !== undefined) {
-                    if (val.code && val.message) {
-                        this.alert = true
-                        this.errorMsg = val.message
-                    }
+                    this.alert = true
+                    this.errorMsg = val.message
                 }
             }
         },
         methods: {
             onSignIn() {
                 this.$v.$touch()
-                if (this.$v.$invalid) {
-                    console.log("Invalid input")
-                } else {
+                if (!this.$v.$invalid) {
                     this.loading = true
                     this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
                 } 

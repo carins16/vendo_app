@@ -6,6 +6,7 @@ import PurchaseHistory from '@/views/Purchase_history'
 import Settings from '@/views/Settings'
 import SignIn from '@/views/Sign_in'
 import AuthGuard from './auth-guard'
+import store from './store'
 
 Vue.use(Router)
 
@@ -16,7 +17,15 @@ export default new Router({
     { 
       path: '/sign_in',
       name: 'sign_in',
-      component: SignIn
+      component: SignIn,
+      beforeEnter: (to, from, next) => {
+        if (store.getters.getUser) {
+          next('/')
+        } else {
+          next()
+        }
+        
+      }
     },
     { 
       path: '/',

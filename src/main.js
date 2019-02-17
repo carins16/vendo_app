@@ -21,15 +21,15 @@ new Vue({
       storageBucket: 'vendo-app-fa30b.appspot.com',
       messagingSenderId: '1046399963141'
     })
-    
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.$store.dispatch('autoSignIn', user)
-        firebase.database().ref('items').on('value', function(snapshot){
-          console.log(snapshot.val())
-        })
+        console.log("User has already login")
+        // firebase.database().ref('items').on('value', function(snapshot){
+        //   console.log(snapshot.val())
+        // })
       } else {
-        this.$router.replace('/sign_in')
+        console.log("Please relogin")
       }
     })
   }
