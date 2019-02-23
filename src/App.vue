@@ -7,8 +7,8 @@
                 <v-layout pa-2 column fill-height class="lightbox white--text">
                 <v-spacer></v-spacer>
                 <v-flex shrink>
-                    <div class="subheading">John Kenneth N. Carino</div>
-                    <div class="body-1">johnkenneth411@gmail.com</div>
+                    <div class="subheading">{{email}}</div>
+                    <div class="body-1">Administrator</div>
                 </v-flex>
                 </v-layout>
             </v-img>
@@ -66,20 +66,20 @@
     }),
     methods: {
         onLogout() {
-            this.$store.dispatch('signOut')
+            this.$store.dispatch('userSignOut')
         }
     },
     computed: {
         userIsAuthenticated() {
             return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
         },
-        user() {
-            return this.$store.getters.getUser
+        email () {
+            return this.$store.getters.getUser.email
         }
     },
     watch: {
-        user(val) {
-            if (val == null || val == undefined) this.$router.replace('/sign_in')
+        userIsAuthenticated(val) {
+            if (!val) this.$router.replace('/sign_in')
         }
     }
   }

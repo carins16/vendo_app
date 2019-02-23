@@ -63,8 +63,8 @@
             user() {
                 return this.$store.getters.getUser
             },
-            loginError() {
-                return this.$store.getters.getLoginError
+            authError() {
+                return this.$store.getters.getAuthError
             },
             emailErrors () {
                 const errors = []
@@ -86,7 +86,7 @@
                 this.loading = false
                 if (val !== null && val !== undefined) this.$router.replace('/')
             },
-            loginError(val) {
+            authError(val) {
                 this.loading = false
                 if (val !== null && val !== undefined) {
                     this.alert = true
@@ -97,9 +97,9 @@
         methods: {
             onSignIn() {
                 this.$v.$touch()
-                if (!this.$v.$invalid) {
+                if (!this.$v.$invalid && this.loading != true) {
                     this.loading = true
-                    this.$store.dispatch('signUserIn', {email: this.email, password: this.password})
+                    this.$store.dispatch('userAuth', {email: this.email, password: this.password})
                 } 
             }
         }
