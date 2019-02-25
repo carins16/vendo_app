@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     user: JSON.parse(localStorage.getItem('user')),
     authError: null,
-    items: null
+    items: null,
+    updates: null
   },
   mutations: {
     setUser (state, payload) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setItems (state, payload) {
       state.items = payload
+    },
+    setUpdates (state, payload) {
+      state.updates = payload
     }
   },
   actions: {
@@ -82,7 +86,10 @@ export default new Vuex.Store({
         if (error) {
           console.log(error)
         } else {
-          console.log("Update successful.")
+          commit('setUpdates', { 
+            status: true, 
+            msg: 'Product no. ' + payload.id + ' successfully updated.'
+          })
         }
       })
     }
@@ -96,6 +103,9 @@ export default new Vuex.Store({
     },
     getItems: state => {
       return state.items
+    },
+    getUpdates: state => {
+      return state.updates
     }
   }
 })

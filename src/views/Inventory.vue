@@ -53,7 +53,7 @@
               <v-btn icon dark @click="onClose">
                 <v-icon>close</v-icon>
               </v-btn>
-              <v-toolbar-title>Product No. 1</v-toolbar-title>
+              <v-toolbar-title>Product No. {{ edit.id }}</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn type="submit" class="subheading" dark flat :loading="loading">SAVE</v-btn>
@@ -120,6 +120,11 @@
       </v-card>
     </v-dialog>
 
+    <!-- Snackbar -->
+    <v-snackbar v-model="snackbar.status" bottom="bottom">
+      {{ snackbar.msg }}
+      <v-btn color="white" flat @click="snackbar.status = false">Close</v-btn>
+    </v-snackbar>
   </div>
 </template>
 
@@ -153,6 +158,10 @@
         qty: ''
       },
       loading: false,
+      snackbar: {
+        status: false,
+        msg: ''
+      }
     }),
     methods: {
       setDialogTransition () {
@@ -174,8 +183,8 @@
       onSaveChanges () {
         this.$v.$touch()
         if (!this.$v.$invalid && this.loading != true) {
+          this.loading = true
           this.$store.dispatch('updateItems', this.edit)
-          this.dialog = false
         }
       },
       onClose () {
@@ -186,15 +195,6 @@
         this.edit.qty = ''
 
         this.dialog = false
-      },
-      isNumber (evt) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-          evt.preventDefault();;
-        } else {
-          return true;
-        }
       }
     },
     computed: {
@@ -203,6 +203,9 @@
       },
       loadItems() {
         return this.$store.getters.getItems
+      },
+      updateStatus() {
+        return this.$store.getters.getUpdates
       },
       nameErrors () {
         const errors = []
@@ -234,6 +237,15 @@
       },
       loadItems (val) {
         this.items = val
+      },
+      updateStatus (val) {
+        if (val !== null && val !== undefined) {
+          this.snackbar.status = val.status
+          this.snackbar.msg = val.msg
+
+          this.dialog = false
+          this.loading = false
+        }
       }
     },
     created() {
