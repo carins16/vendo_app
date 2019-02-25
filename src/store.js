@@ -56,22 +56,34 @@ export default new Vuex.Store({
       }))
     },
     userSignOut ({commit}) {
-      firebase.auth().signOut().
-      then(() => {
+      firebase.auth().signOut().then(() => {
         commit('setUser', null)
         commit('setItems', null)
         localStorage.removeItem('user')
       }).catch(error => {
-          console.log(error)
-        }
-      )
+        console.log(error)
+      })
     },
     fetchItems ({commit}) {
-      firebase.database().ref('items').on('value', function(snapshot){
+      firebase.database().ref('items').on('value', snapshot => {
         // snapshot.forEach(childSnapshot => {
         //   console.log(childSnapshot.val())
         // })
         commit('setItems', snapshot.val())
+      })
+    },
+    updateItems ({commit}, payload) {
+
+      firebase.database().ref('items/' + payload.key).update({
+        name:   payload.name,
+        price:  payload.price,
+        qty:    payload.qty
+      }, error => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log("Update successful.")
+        }
       })
     }
   },

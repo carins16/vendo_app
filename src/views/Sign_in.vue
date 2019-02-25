@@ -47,7 +47,7 @@
         mixins: [validationMixin],
         validations: {
             email: { required, email },
-            password: {required, minLength: minLength(6)}
+            password: { required, minLength: minLength(6) }
         },
         components: {
 
