@@ -9,7 +9,8 @@ export default new Vuex.Store({
     user: JSON.parse(localStorage.getItem('user')),
     authError: null,
     items: null,
-    updates: null
+    updates: null,
+    purchaseHistory: null
   },
   mutations: {
     setUser (state, payload) {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
     },
     setUpdates (state, payload) {
       state.updates = payload
+    },
+    setPurchaseHistory (state, payload) {
+      state.purchaseHistory = payload
     }
   },
   actions: {
@@ -70,15 +74,34 @@ export default new Vuex.Store({
     },
     fetchItems ({commit}) {
       firebase.database().ref('items').on('value', snapshot => {
-        // snapshot.forEach(childSnapshot => {
-        //   console.log(childSnapshot.val())
-        // })
         commit('setItems', snapshot.val())
+      })
+    },
+    fetchPurchaseHistory ({commit}) {
+      firebase.database().ref('purchase_history').on('value', snapshot => {
+
+        var purchaseHistory = []
+        
+        snapshot.forEach(childSnapshot => {
+          
+          purchaseHistory.push({
+            key: childSnapshot.key,
+            id: childSnapshot.val().id,
+            name: childSnapshot.val().name,
+            price: childSnapshot.val().price,
+            date: childSnapshot.val().date,
+          })
+          // purchaseHistory[childSnapshot.key] = childSnapshot.val()
+        })
+
+        purchaseHistory.reverse()
+
+        commit('setPurchaseHistory', purchaseHistory)
       })
     },
     updateItems ({commit}, payload) {
 
-      firebase.database().ref('items/' + payload.key).update({
+      firebase.database().ref('items/' + payload.key).set({
         name:   payload.name,
         price:  payload.price,
         qty:    payload.qty
@@ -88,7 +111,7 @@ export default new Vuex.Store({
         } else {
           commit('setUpdates', { 
             status: true, 
-            msg: 'Product no. ' + payload.id + ' successfully updated.'
+            msg: 'Product ' + payload.key + ' successfully updated.'
           })
         }
       })
@@ -106,6 +129,9 @@ export default new Vuex.Store({
     },
     getUpdates: state => {
       return state.updates
+    },
+    getPurchaseHistory: state => {
+      return state.purchaseHistory
     }
   }
 })

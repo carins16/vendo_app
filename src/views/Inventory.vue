@@ -22,7 +22,7 @@
           <v-card-title primary-title>
             <v-layout row wrap>
               <v-flex xs12 class="text-truncate" mb-1>
-                <span class="subheading font-weight-medium white--text blue darken-2">&nbsp;{{ item.id }}&nbsp;</span>
+                <span class="subheading font-weight-medium white--text blue darken-2">&nbsp;{{ index }}&nbsp;</span>
                 <span class="subheading font-weight-medium">&nbsp;{{ item.name }}</span>
               </v-flex>
               <v-flex xs12>
@@ -34,7 +34,7 @@
             </v-layout>
           </v-card-title>
           <v-card-actions>
-            <v-btn color="success" @click="onUpdateItem(index, item.id, item.name, item.price, item.qty)">
+            <v-btn color="success" @click="onUpdateItem(index, item.name, item.price, item.qty)">
               Update
             </v-btn>
           </v-card-actions>
@@ -53,7 +53,7 @@
               <v-btn icon dark @click="onClose">
                 <v-icon>close</v-icon>
               </v-btn>
-              <v-toolbar-title>Product No. {{ edit.id }}</v-toolbar-title>
+              <v-toolbar-title>Product {{ edit.key }}</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn type="submit" class="subheading" dark flat :loading="loading">SAVE</v-btn>
@@ -64,7 +64,7 @@
           <!-- Small dialog header -->
           <template v-else>
             <v-card-title>
-              <span class="title">Product No. {{ edit.id }}</span>
+              <span class="title">Product {{ edit.key }}</span>
             </v-card-title>
             <v-divider></v-divider>
           </template>
@@ -152,7 +152,6 @@
       customTransition: '',
       edit: {
         key: null,
-        id: null,
         name: '',
         price: '',
         qty: ''
@@ -171,9 +170,8 @@
           this.customTransition = 'dialog-transition'
         }
       },
-      onUpdateItem (key, id, name, price, qty) {
+      onUpdateItem (key, name, price, qty) {
         this.edit.key = key
-        this.edit.id = id
         this.edit.name = name
         this.edit.price = price
         this.edit.qty = qty
@@ -189,7 +187,6 @@
       },
       onClose () {
         this.edit.key = null
-        this.edit.id = null
         this.edit.name = ''
         this.edit.price = ''
         this.edit.qty = ''
