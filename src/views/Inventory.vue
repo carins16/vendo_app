@@ -3,12 +3,12 @@
 
     <!-- Header -->
     <v-layout row wrap>
-      <v-flex xs10 pt-1 pl-2>
+      <v-flex xs10 pt-1 pl-2 mb-4>
         <u class="headline font-weight-medium">Inventory</u>
       </v-flex>
       <v-flex xs2>
         <v-layout align-end justify-end>
-          <v-btn flat icon color="blue">
+          <v-btn flat icon color="blue" :loading="fetching">
             <v-icon medium>refresh</v-icon>
           </v-btn>
         </v-layout>
@@ -160,7 +160,8 @@
       snackbar: {
         status: false,
         msg: ''
-      }
+      },
+      fetching: true
     }),
     methods: {
       setDialogTransition () {
@@ -243,6 +244,9 @@
           this.dialog = false
           this.loading = false
         }
+      },
+      items (val) {
+        if (val !== null) this.fetching = false
       }
     },
     created() {

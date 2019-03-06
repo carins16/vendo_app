@@ -46,6 +46,11 @@
                 <v-fade-transition mode="out-in">
                     <router-view></router-view>
                 </v-fade-transition>
+                <!-- Snackbar -->
+                <v-snackbar v-model="snackbar.status" bottom="bottom">
+                    {{ snackbar.msg }}
+                <v-btn color="white" flat @click="snackbar.status = false">Close</v-btn>
+                </v-snackbar>
             </v-container>
         </v-content>
     </v-app>
@@ -57,12 +62,15 @@
     data: () => ({
         drawer: null,
         pages: [
-            {title: "Dashboard",        icon: "home",           path: "/"},
+            {title: "Dashboard",        icon: "dashboard",      path: "/"},
             {title: "Inventory",        icon: "storage",        path: "/inventory"},
             {title: "Purchase History", icon: "equalizer",      path: "/purchase_history"},
-            {divider: true },
-            {title: "Settings",         icon: "settings",       path: "/settings"}
-        ]
+            {divider: true }
+        ],
+        snackbar: {
+            status: false,
+            msg: ''
+        }
     }),
     methods: {
         onLogout() {
@@ -70,6 +78,9 @@
         }
     },
     computed: {
+        newPurchase() {
+            return this.$store.getters.getNewPurchase
+        },
         userIsAuthenticated() {
             return this.$store.getters.getUser !== null && this.$store.getters.getUser !== undefined
         },
@@ -80,6 +91,12 @@
     watch: {
         userIsAuthenticated(val) {
             if (!val) this.$router.replace('/sign_in')
+        },
+        newPurchase(val) {
+            if (val !== null && val !== undefined) {
+                this.snackbar.msg = "Product " + val.name + " has been sold."
+                this.snackbar.status = true
+            }
         }
     }
   }

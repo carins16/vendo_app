@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import Dashboard from '@/views/Dashboard'
 import Inventory from '@/views/Inventory'
 import PurchaseHistory from '@/views/Purchase_history'
-import Settings from '@/views/Settings'
 import SignIn from '@/views/Sign_in'
 import AuthGuard from './auth-guard'
 import store from './store'
@@ -44,12 +43,6 @@ export default new Router({
       name: 'purchase_history',
       component: PurchaseHistory,
       beforeEnter: AuthGuard
-    },
-    { 
-      path: '/settings',
-      name: 'settings',
-      component: Settings,
-      beforeEnter: AuthGuard 
     }
   ]
 })

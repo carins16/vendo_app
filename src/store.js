@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
+// import router from './router'
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
     authError: null,
     items: null,
     updates: null,
-    purchaseHistory: null
+    purchaseHistory: null,
+    newPurchase: null
   },
   mutations: {
     setUser (state, payload) {
@@ -27,6 +29,9 @@ export default new Vuex.Store({
     },
     setPurchaseHistory (state, payload) {
       state.purchaseHistory = payload
+    },
+    setNewPurchase (state, payload) {
+      state.newPurchase = payload
     }
   },
   actions: {
@@ -98,6 +103,13 @@ export default new Vuex.Store({
 
         commit('setPurchaseHistory', purchaseHistory)
       })
+
+      firebase.database().ref('purchase_history').on('child_added', snapshot => {
+
+        if (this.getters.getPurchaseHistory !== null  && this.getters.getPurchaseHistory !== undefined) {
+          commit('setNewPurchase', snapshot.val())
+        }
+      })
     },
     updateItems ({commit}, payload) {
 
@@ -132,6 +144,9 @@ export default new Vuex.Store({
     },
     getPurchaseHistory: state => {
       return state.purchaseHistory
+    },
+    getNewPurchase: state => {
+      return state.newPurchase
     }
   }
 })
