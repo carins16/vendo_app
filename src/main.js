@@ -37,12 +37,10 @@ new Vue({
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log("User has login")
         this.$store.dispatch('userSignIn', { uid: user.uid, email: user.email })
         this.$store.dispatch('fetchItems')
         this.$store.dispatch('fetchPurchaseHistory')
       } else {
-        console.log("User has logout")
         this.$store.dispatch('userSignOut')
       }
     })
